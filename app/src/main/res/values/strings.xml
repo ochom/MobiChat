@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MobiChat</string>
+    <string name="channel_name">channel_101</string>
+    <string name="channel_description">Mobichat notification channel</string>
+</resources>

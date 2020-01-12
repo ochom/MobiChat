@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "599534465287",
+    "firebase_url": "https://mobichat.firebaseio.com",
+    "project_id": "mobichat",
+    "storage_bucket": "mobichat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599534465287:android:a1a4f30d7bcdfa336f55a2",
+        "android_client_info": {
+          "package_name": "com.lysofts.mobichat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "599534465287-l1oksauumpgcj3p7b8cdmstcfn9rfhf9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lysofts.mobichat",
+            "certificate_hash": "d668562022be29382d2959cf96b591287899dc3e"
+          }
+        },
+        {
+          "client_id": "599534465287-ftu4pmnkh0up4hedg6gmgn49595m6s2q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCA_l5--0Kg1CvGEcFVI4cY39sAoPn7i7s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "599534465287-ftu4pmnkh0up4hedg6gmgn49595m6s2q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
