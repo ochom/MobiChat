@@ -2,4 +2,8 @@
     <string name="app_name">MobiChat</string>
     <string name="channel_name">channel_101</string>
     <string name="channel_description">Mobichat notification channel</string>
+    <string name="post">Post</string>
+    <string name="time">Time</string>
+    <string name="body">Body</string>
+    <string name="comments">Comments</string>
 </resources>

@@ -131,7 +131,7 @@ public class PostDetails extends AppCompatActivity {
             pBar.setVisibility(View.VISIBLE);
             API.getData("/posts/comments/"+post_id, null, new JsonHttpResponseHandler() {
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {  
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     pBar.setVisibility(View.GONE);
                     if (statusCode==200) {
                         try {
@@ -147,13 +147,11 @@ public class PostDetails extends AppCompatActivity {
                                     String updated_at = c.getString(UPDATED_AT);
 
                                     list.add(new CommentModel(id, body, like, updated_at));
-
-                                if (list.size()>0){
-                                    ListView listView = findViewById(R.id.post_comments_list);
-                                    CommentAdapter adapter = new CommentAdapter(PostDetails.this,list);
-                                    listView.setAdapter(adapter);
-                                }
                             }
+
+                            ListView listView = findViewById(R.id.post_comments_list);
+                            CommentAdapter adapter = new CommentAdapter(PostDetails.this,list);
+                            listView.setAdapter(adapter);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -175,6 +173,11 @@ public class PostDetails extends AppCompatActivity {
             });
     }
 
+    public void FocusOnEditText(View view){
+        EditText etCommentFocus = findViewById(R.id.et_comment_body);
+        etCommentFocus.requestFocus();
+    }
+
     public void EditPost(View view) {
         Intent intent = new Intent(PostDetails.this,EditPost.class);
         intent.putExtra("post_id", post_id);
@@ -193,7 +196,37 @@ public class PostDetails extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                DeleteMYPost();
+                try{
+                    pDialog = new ProgressDialog(PostDetails.this);
+                    pDialog.setMessage("Deleting post...");
+                    pDialog.setCancelable(false);
+                    pDialog.show();
+                    API.deleteData(PostDetails.this,"/posts/"+post_id, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            if (pDialog.isShowing()){
+                                pDialog.dismiss();
+                            }
+                            if (statusCode==200){
+                                new CustomNotification().show(PostDetails.this,001,"Your post has been deleted successfully");
+                            }
+                            if (statusCode == 404) {
+                                Toast.makeText(PostDetails.this,"Post not found.",Toast.LENGTH_SHORT).show();
+                            }
+                            if (statusCode == 500) {
+                                Toast.makeText(PostDetails.this,"An error occurred. Try again later.",Toast.LENGTH_SHORT).show();
+                            }
+                            onBackPressed();
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Toast.makeText(PostDetails.this,"An error occurred. Try again later.",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }catch(Exception ex){
+                    ex.printStackTrace();
+                }
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -207,39 +240,6 @@ public class PostDetails extends AppCompatActivity {
         dialog.show();
     }
 
-    private void DeleteMYPost(){
-        try{
-            pDialog = new ProgressDialog(PostDetails.this);
-            pDialog.setMessage("Deleting post...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-            API.deleteData(PostDetails.this,"/posts/"+post_id, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    if (pDialog.isShowing()){
-                        pDialog.dismiss();
-                    }
-                    if (statusCode==200){
-                        new CustomNotification().show(PostDetails.this,001,"Your post has been deleted successfully");
-                    }                
-                    if (statusCode == 404) {
-                        Toast.makeText(PostDetails.this,"Post not found.",Toast.LENGTH_SHORT).show();
-                    }
-                    if (statusCode == 500) {
-                        Toast.makeText(PostDetails.this,"An error occurred. Try again later.",Toast.LENGTH_SHORT).show();
-                    }
-                    onBackPressed();
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-                }
-            });
-        }catch(Exception ex){
-            ex.printStackTrace();
-        }
-    }
 
 
 
@@ -270,7 +270,7 @@ public class PostDetails extends AppCompatActivity {
                         pDialog.dismiss();
                     }
                     if (statusCode==201){
-                        new CustomNotification().show(PostDetails.this,001,"Successfully created comment.");
+                        new CustomNotification().show(PostDetails.this,006,"Successfully created comment.");
                     }
                     if (statusCode==500){
                         Toast.makeText(PostDetails.this, "An error occurred. Try again later.", Toast.LENGTH_SHORT).show();
@@ -304,7 +304,7 @@ public class PostDetails extends AppCompatActivity {
                         pDialog.dismiss();
                     }
                     if(statusCode==200){
-                        new CustomNotification().show(PostDetails.this,004,"Successfully created comment");
+                        new CustomNotification().show(PostDetails.this,011,"Successfully created comment");
                     }
                     if(statusCode==404){
                         Toast.makeText(PostDetails.this, "Comment not found", Toast.LENGTH_SHORT).show();
@@ -341,7 +341,8 @@ public class PostDetails extends AppCompatActivity {
                         pDialog.dismiss();
                     }
                     if(statusCode==200){
-                        new CustomNotification().show(PostDetails.this,004,"Successfully deleted comment");
+                        new CustomNotification().show(PostDetails.this,010,"Successfully deleted comment");
+                        GetPostComments();
                     }
                     if(statusCode==404){
                         Toast.makeText(PostDetails.this, "Comment not found", Toast.LENGTH_SHORT).show();
@@ -349,7 +350,6 @@ public class PostDetails extends AppCompatActivity {
                     if(statusCode==500){
                         Toast.makeText(PostDetails.this, "An error occurred. Try again later.", Toast.LENGTH_SHORT).show();
                     }
-                    GetPostComments();
                 }
 
                 @Override
