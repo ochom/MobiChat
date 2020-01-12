@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,7 +24,7 @@
             android:id="@+id/post_detail_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Post"
+            android:text="@string/post"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -34,35 +33,39 @@
             android:id="@+id/update_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="time"
-            android:textSize="12dp" />
+            android:text="@string/time"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/post_detail_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Body"
-            android:textSize="18dp" />
+            android:text="@string/body"
+            android:textSize="18sp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:onClick="FocusOnEditText"
                 android:orientation="horizontal"
-                android:paddingLeft="20dp">
+                android:paddingLeft="20dp"
+                android:paddingStart="20dp">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginRight="5dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_comment" />
+                    android:src="@drawable/ic_comment"
+                    android:contentDescription="@string/comments"/>
 
                 <TextView
                     android:id="@+id/comment_count"
