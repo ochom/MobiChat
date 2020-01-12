@@ -76,7 +76,7 @@ public class PostDetails extends AppCompatActivity {
         try{
             pDialog = new ProgressDialog(PostDetails.this);
             pDialog.setMessage("Getting post...");
-            pDialog.setCancelable(false);
+            pDialog.setCancelable(true);
             pDialog.show();
             API.getData("/posts/"+post_id, null, new JsonHttpResponseHandler() {
                 @Override
