@@ -52,8 +52,7 @@ public class EditPost extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(EditPost.this, PostDetails.class);
-        intent.putExtra("post_id", post_id);
+        Intent intent = new Intent(EditPost.this, Posts.class);
         startActivity(intent);
         EditPost.this.finish();
     }
@@ -93,10 +92,7 @@ public class EditPost extends AppCompatActivity {
                     }
                     if (statusCode == 200) {
                         new CustomNotification().show(EditPost.this, 001, "Successfully updated post.");
-                        Intent intent = new Intent(EditPost.this, PostDetails.class);
-                        intent.putExtra("post_id", post_id);
-                        startActivity(intent);
-                        EditPost.this.finish();
+                        onBackPressed();
                     }
                     if (statusCode == 404) {
                         Toast.makeText(EditPost.this,"Post not found.",Toast.LENGTH_SHORT).show();

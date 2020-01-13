@@ -1,8 +1,6 @@
 package com.lysofts.mobichat;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -91,7 +89,6 @@ public class PostDetails extends AppCompatActivity {
                         try {
                             JSONObject c = response.getJSONObject(DATA);
 
-                            int id = c.getInt(ID);
                             String title = c.getString(TITLE);
                             String body = c.getString(BODY);
                             //String created_at = c.getString(CREATED_AT);
@@ -137,7 +134,7 @@ public class PostDetails extends AppCompatActivity {
                         try {
                             JSONArray jsonArray = response.optJSONArray(DATA);
                             total_comments = jsonArray.length();
-                            tvCount.setText(total_comments+""); //(total_comments==1?" Comment":" Comments")
+                            tvCount.setText(total_comments+ (total_comments==1?" Comment":" Comments"));
                             for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject c = jsonArray.getJSONObject(i);
 
@@ -176,68 +173,6 @@ public class PostDetails extends AppCompatActivity {
     public void FocusOnEditText(View view){
         EditText etCommentFocus = findViewById(R.id.et_comment_body);
         etCommentFocus.requestFocus();
-    }
-
-    public void EditPost(View view) {
-        Intent intent = new Intent(PostDetails.this,EditPost.class);
-        intent.putExtra("post_id", post_id);
-        intent.putExtra("post_title",tvTitle.getText().toString());
-        intent.putExtra("post_body",tvBody.getText().toString());
-        startActivity(intent);
-        PostDetails.this.finish();
-    }
-
-    public void DeletePost(View view) {
-        AlertDialog dialog;
-        final AlertDialog.Builder builder = new AlertDialog.Builder(PostDetails.this);
-        builder.setCancelable(true);
-        builder.setTitle("Delete comment");
-        builder.setMessage("Are you sure you want to delete this post?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                try{
-                    pDialog = new ProgressDialog(PostDetails.this);
-                    pDialog.setMessage("Deleting post...");
-                    pDialog.setCancelable(false);
-                    pDialog.show();
-                    API.deleteData(PostDetails.this,"/posts/"+post_id, new AsyncHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            if (pDialog.isShowing()){
-                                pDialog.dismiss();
-                            }
-                            if (statusCode==200){
-                                new CustomNotification().show(PostDetails.this,001,"Your post has been deleted successfully");
-                            }
-                            if (statusCode == 404) {
-                                Toast.makeText(PostDetails.this,"Post not found.",Toast.LENGTH_SHORT).show();
-                            }
-                            if (statusCode == 500) {
-                                Toast.makeText(PostDetails.this,"An error occurred. Try again later.",Toast.LENGTH_SHORT).show();
-                            }
-                            onBackPressed();
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            Toast.makeText(PostDetails.this,"An error occurred. Try again later.",Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }catch(Exception ex){
-                    ex.printStackTrace();
-                }
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        dialog = builder.create();
-        dialog.show();
     }
 
 
